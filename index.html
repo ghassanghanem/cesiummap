@@ -14,27 +14,36 @@
       padding: 0;
       overflow: hidden;
     }
+
     /* Add some style to the container */
-#cesiumContainer {
-  background-color: #F5F5F5;
-}
- </style>
+    #cesiumContainer {
+      background-color: #F5F5F5;
+    }
+  </style>
 </head>
 <body>
   <div id="cesiumContainer"></div>
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyZThmYzBhNC01MzE3LTRiNjYtYjYzMy1hNzkwOTg5YzE5MmYiLCJpZCI6MTI2MzA4LCJpYXQiOjE2NzczNjUwNzN9.BAp0iKzZzQlQYjwsjb9FIvWkRJ1p6ykJhh1ALL-D5wQ';
-const viewer = new Cesium.Viewer('cesiumContainer', {
-  terrainProvider: Cesium.createWorldTerrain()
-});
+    
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrainProvider: Cesium.createWorldTerrain()
+    });
 
-const tileset = viewer.scene.primitives.add(
-  new Cesium.Cesium3DTileset({
-    url: Cesium.IonResource.fromAssetId(1597040),
-  })
-);
+    const tileset = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1597040),
+      })
+    );
 
-viewer.zoomTo(tileset);
-</script>
+    // Add a click event listener to the "View Home" button
+    const homeButton = new Cesium.HomeButton({
+      viewModel: new Cesium.HomeButtonViewModel(viewer.scene, tileset)
+    });
+    homeButton.viewModel.command.beforeExecute.addEventListener(function () {
+      viewer.zoomTo(tileset);
+    });
+  </script>
 </body>
 </html>
+
